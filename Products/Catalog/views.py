@@ -25,6 +25,11 @@ def Login(request):
         Password = request.POST.get('Password')
         if not Customer.objects.filter(Name=Name).exists():
             messages.error(request, "Invalid Username")
+        elif not Customer.objects.filter(Name=Name, Password=Password).exists():
+            messages.error(request, "Invalid Password")
+        else:
+            messages.success(request,f"Welcome {Name}!")
+            return redirect('index')
     return render(request, 'Catalog/Login.html')
 
 def SignUp(request):
