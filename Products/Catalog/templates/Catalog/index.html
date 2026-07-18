@@ -10,50 +10,112 @@
     <link rel="stylesheet" href="{% static 'Catalog/style.css' %}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
 </head>
-<body style="background-color: #1c2d37; color: #ffffff; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-    <nav class="navbar d-flex justify-content-center align-items-center gap-5 py-4 position-relative w-100">
+<body style="background-color: white; color: #333333; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
     
-    <a href="/" class="position-absolute start-0 ps-4">
-        <img src="{% static 'Catalog/logo.png' %}" alt="Brand Logo" height="65">
-    </a>
-    
-    <a href="{% url 'about' %}">About</a>
-    <a href="{% url 'products' %}">Products</a>
-    <a href="{% url 'contact' %}">Contact</a>
+    <nav class="navbar d-flex justify-content-center align-items-center gap-5 py-4 position-relative w-100" style="opacity: 0; position: relative; z-index: 1050; pointer-events: auto;">
+        <a href="/" class="position-absolute start-0 ps-4 navbar-logo d-flex align-items-center">
+            <img src="{% static 'Catalog/logo.png' %}" alt="Brand Logo" height="65">
+        </a>
+        
+        <div class="navbar-menu d-flex align-items-center gap-5">
+            <a href="{% url 'about' %}" class="text-dark text-decoration-none fw-medium">About</a>
+            <a href="{% url 'products' %}" class="text-dark text-decoration-none fw-medium">Products</a>
+            <a href="{% url 'brand' %}" class="text-dark text-decoration-none fw-medium">Brand</a>
+            <a href="{% url 'contact' %}" class="text-dark text-decoration-none fw-medium">Contact</a>
+        </div>
 
-    <div class="position-absolute end-0  d-flex gap-4 pe-4">
-    <a href="{% url 'Login' %}">login</a>
-    <a href="{% url 'SignUp' %}">signUp</a>
-    </div>
+        <div class="position-absolute end-0 d-flex gap-4 pe-4 navbar-auth align-items-center">
+            <a href="{% url 'Login' %}" class="text-dark text-decoration-none fw-medium">login</a>
+            <a href="{% url 'SignUp' %}" class="text-dark text-decoration-none fw-medium">signUp</a>
+        </div>
+    </nav>
 
-</nav>
-{% if messages %}
-    {% for message in messages %}
-        <div class="toast align-items-center text-white {% if message.tags == 'error' %}bg-danger{% else %}bg-success{% endif %} border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
-            <div class="d-flex">
-                <div class="toast-body fw-bold">
-                    {% if message.tags == 'error' %}{% else %}{% endif %} {{ message }}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="toast align-items-center text-white {% if message.tags == 'error' %}bg-danger{% else %}bg-success{% endif %} border-0 show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="4000">
+                <div class="d-flex">
+                    <div class="toast-body fw-bold">
+                        {{ message }}
+                    </div>
+                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if request.resolver_match.url_name == 'index' %}
+    <div id="mainHeroCarousel" class="carousel slide w-100" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#mainHeroCarousel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+            <button type="button" data-bs-target="#mainHeroCarousel" data-bs-slide-to="1"></button>
+            <button type="button" data-bs-target="#mainHeroCarousel" data-bs-slide-to="2"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="{% static 'Catalog/creatine.jpg' %}" class="d-block w-100" style="height: 40vw; max-height: 450px; min-height: 300px; object-fit: cover; object-position: center;" alt="Slide 1">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'Catalog/whey.webp' %}" class="d-block w-100" style="height: 40vw; max-height: 450px; min-height: 300px; object-fit: cover; object-position: center;" alt="Slide 2">
+            </div>
+            <div class="carousel-item">
+                <img src="{% static 'Catalog/gainer.webp' %}" class="d-block w-100" style="height: 40vw; max-height: 450px; min-height: 300px; object-fit: cover; object-position: center;" alt="Slide 3">
             </div>
         </div>
-    {% endfor %}
-{% endif %}
+    </div>
+    {% endif %}
 
-<main class="container my-4">
+    <main class="container my-5">
         {% block content %}
-        
         {% endblock %}
     </main>
+
+    <!-- THIS WRAPPER HIDES THE FOOTER MARQUEE ON ALL PAGES EXCEPT THE HOME PAGE INDEX -->
+    {% if request.resolver_match.url_name == 'index' %}
+    <footer class="w-100 py-5 px-4 overflow-hidden border-top" style="border-color: #e5e5e5 !important; background-color: #fafafa;">
+        <div class="d-flex position-relative w-100 overflow-hidden" style="user-select: none;">
+            <div class="d-flex align-items-center gap-5 pe-5 brand-marquee-track" style="white-space: nowrap; flex-shrink: 0;">
+                <img src="{% static 'Catalog/beastlife.webp' %}" alt="Beast Life" height="90" class="mx-5 opacity-75" style="filter: invert(1);">
+                <img src="{% static 'Catalog/MB.webp' %}" alt="Brand 2" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/GNC.jpg' %}" alt="Brand 3" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/wellcore.webp' %}" alt="Brand 4" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/brand5.png' %}" alt="Brand 5" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/brand6.png' %}" alt="Brand 6" height="90" class="mx-5 opacity-75">
+            </div>
+            <div class="d-flex align-items-center gap-5 pe-5 brand-marquee-track" style="white-space: nowrap; flex-shrink: 0;" aria-hidden="true">
+                <img src="{% static 'Catalog/beastlife.webp' %}" alt="Beast Life" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/MB.webp' %}" alt="Brand 2" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/GNC.jpg' %}" alt="Brand 3" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/wellcore.webp' %}" alt="Brand 4" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/brand5.png' %}" alt="Brand 5" height="90" class="mx-5 opacity-75">
+                <img src="{% static 'Catalog/brand6.png' %}" alt="Brand 6" height="90" class="mx-5 opacity-75">
+            </div>
+        </div>
+    </footer>
+    {% endif %}
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var toastElList = [].slice.call(document.querySelectorAll('.toast'));
             var toastList = toastElList.map(function (toastEl) {
                 return new bootstrap.Toast(toastEl).show();
             });
+
+            gsap.to(".navbar", { opacity: 1, duration: 0.4, ease: "power2.out" });
+            gsap.from(".navbar-logo", { x: -30, opacity: 0, duration: 0.5, ease: "power2.out" });
+            gsap.from(".navbar-menu", { y: -15, opacity: 0, duration: 0.5, ease: "power2.out" });
+            gsap.from(".navbar-auth", { y: -10, opacity: 0, duration: 0.4, ease: "power2.out" });
+
+            if(document.querySelector(".brand-marquee-track")) {
+                gsap.to(".brand-marquee-track", {
+                    xPercent: -100,
+                    ease: "none",
+                    duration: 15,
+                    repeat: -1
+                });
+            }
         });
     </script>
 </body>

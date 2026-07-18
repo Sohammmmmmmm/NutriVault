@@ -15,6 +15,9 @@ def about(request):
 def products(request):
     return render(request, 'Catalog/products.html')
 
+def brand(request):
+    return render(request, 'Catalog/brand.html')
+
 def contact(request):
     return render(request, 'Catalog/contact.html')
 
